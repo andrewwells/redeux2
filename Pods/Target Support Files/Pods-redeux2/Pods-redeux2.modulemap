@@ -1,0 +1,6 @@
+framework module Pods_redeux2 {
+  umbrella header "Pods-redeux2-umbrella.h"
+
+  export *
+  module * { export * }
+}

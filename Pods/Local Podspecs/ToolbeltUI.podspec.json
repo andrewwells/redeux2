@@ -1,0 +1,27 @@
+{
+  "name": "ToolbeltUI",
+  "version": "0.0.1",
+  "summary": "Toolbelt library containing UI components",
+  "description": "Toolbelt library containing UI components",
+  "homepage": "https://github.com/andrewwells/Toolbelt",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "andrewwells": "alw331@gmail.com"
+  },
+  "source": {
+    "git": "https://github.com/andrewwells/Toolbelt.git",
+    "tag": "0.0.1"
+  },
+  "platforms": {
+    "ios": "11.0"
+  },
+  "source_files": "ToolbeltUI/Classes/**/*",
+  "dependencies": {
+    "SnapKit": [
+
+    ]
+  }
+}

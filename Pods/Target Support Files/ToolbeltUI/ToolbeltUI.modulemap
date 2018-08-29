@@ -1,0 +1,6 @@
+framework module ToolbeltUI {
+  umbrella header "ToolbeltUI-umbrella.h"
+
+  export *
+  module * { export * }
+}
