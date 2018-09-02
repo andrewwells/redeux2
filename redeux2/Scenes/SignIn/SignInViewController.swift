@@ -9,29 +9,9 @@
 import UIKit
 import RxSwift
 import RxCocoa
-import ReSwift
-import ReRxSwift
 import ToolbeltUI
 
-extension SignInViewController: Connectable {
-    
-    struct Props {
-//        let username: String?
-//        let password: String?
-    }
-    struct Actions {
-        let updateUsername: (String) -> Void
-        let updatePassword: (String) -> Void
-    }
-}
-
-class SignInViewController: UIViewController {
-    
-    let connection = Connection(
-        store: store,
-        mapStateToProps: mapStateToProps,
-        mapDispatchToActions: mapDispatchToActions
-    )
+class SignInViewController: ReactiveViewController<SignInReactor> {
     
     private lazy var usernameTextField: UITextField = {
         let tf = UITextField()
@@ -73,7 +53,7 @@ class SignInViewController: UIViewController {
             .distinctUntilChanged()
             .takeUntil(self.rx.deallocated)
             .do(onNext: { [weak self] text in
-                self?.actions.updateUsername(text)
+                //self?.actions.updateUsername(text)
             })
             .subscribe()
         
@@ -83,7 +63,7 @@ class SignInViewController: UIViewController {
             .distinctUntilChanged()
             .takeUntil(self.rx.deallocated)
             .do(onNext: { [weak self] text in
-                self?.actions.updatePassword(text)
+                //self?.actions.updatePassword(text)
             })
             .subscribe()
         
@@ -122,26 +102,9 @@ class SignInViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        connection.connect()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        connection.disconnect()
     }
 }
-
-private let mapStateToProps = { (appState: AppState) in
-    return SignInViewController.Props(
-//        username: appState.signInState.username,
-//        password: appState.signInState.password
-    )
-}
-
-private let mapDispatchToActions = { (dispatch: @escaping DispatchFunction) in
-    return SignInViewController.Actions(
-        updateUsername: { username in dispatch(SignInActionUpdateUsername(text: username)) },
-        updatePassword: { password in dispatch(SignInActionUpdatePassword(text: password)) }
-    )
-}
-

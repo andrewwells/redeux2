@@ -8,8 +8,10 @@
 
 import UIKit
 import SnapKit
+import ReactorKit
+import RxSwift
 
-class SplashViewController: UIViewController {
+class SplashViewController: ReactiveViewController<SplashReactor> {
     
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
@@ -23,8 +25,6 @@ class SplashViewController: UIViewController {
         super.viewDidLoad()
         self.view.backgroundColor = .white
         setup()
-        
-        store.dispatch(AuthState.authenticateSession())
     }
     
     private func setup() {
@@ -32,5 +32,21 @@ class SplashViewController: UIViewController {
         titleLabel.snp.makeConstraints { (make) in
             make.center.equalToSuperview()
         }
+    }
+    
+    override func bind(reactor: SplashReactor) {
+        super.bind(reactor: reactor)
+        
+        _ = Observable.just(())
+            .map { _ in SplashReactor.Action.validateSession }
+            .bind(to: reactor.action)
+        
+        let delay = Observable<Int>.timer(1, scheduler: MainScheduler.instance).map { _ in () }
+        let validateSession = reactor.state.filter { $0.sessionValidated != nil }
+        
+        Observable.combineLatest(validateSession, delay)
+            .map { _ in SplashReactor.Action.complete }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
     }
 }

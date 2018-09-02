@@ -17,6 +17,11 @@
 		4912884F213637E200FAB2DA /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4912884E213637E200FAB2DA /* Session.swift */; };
 		491288542136383C00FAB2DA /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491288532136383C00FAB2DA /* SignInViewController.swift */; };
 		491288562136384E00FAB2DA /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491288552136384E00FAB2DA /* SplashViewController.swift */; };
+		4912885E21363D9800FAB2DA /* RouterReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4912885D21363D9800FAB2DA /* RouterReactor.swift */; };
+		4912886021365B1200FAB2DA /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4912885F21365B1200FAB2DA /* Router.swift */; };
+		491288622136D79F00FAB2DA /* SplashReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491288612136D79F00FAB2DA /* SplashReactor.swift */; };
+		495F132C213B7A1200F5D2D5 /* SignInReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495F132B213B7A1200F5D2D5 /* SignInReactor.swift */; };
+		495F132E213B7D0000F5D2D5 /* ReactiveViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495F132D213B7D0000F5D2D5 /* ReactiveViewController.swift */; };
 		7DCD73A6580630F9557DB03D /* Pods_redeux2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12A3301C9A181583B834975C /* Pods_redeux2.framework */; };
 /* End PBXBuildFile section */
 
@@ -47,6 +52,11 @@
 		4912884E213637E200FAB2DA /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 		491288532136383C00FAB2DA /* SignInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		491288552136384E00FAB2DA /* SplashViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
+		4912885D21363D9800FAB2DA /* RouterReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouterReactor.swift; sourceTree = "<group>"; };
+		4912885F21365B1200FAB2DA /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
+		491288612136D79F00FAB2DA /* SplashReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashReactor.swift; sourceTree = "<group>"; };
+		495F132B213B7A1200F5D2D5 /* SignInReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInReactor.swift; sourceTree = "<group>"; };
+		495F132D213B7D0000F5D2D5 /* ReactiveViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactiveViewController.swift; sourceTree = "<group>"; };
 		6D6E9B78915176442F41D54A /* Pods-redeux2.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-redeux2.debug.xcconfig"; path = "Pods/Target Support Files/Pods-redeux2/Pods-redeux2.debug.xcconfig"; sourceTree = "<group>"; };
 		AEF6E43956F39FDC9E722016 /* Pods-redeux2.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-redeux2.release.xcconfig"; path = "Pods/Target Support Files/Pods-redeux2/Pods-redeux2.release.xcconfig"; sourceTree = "<group>"; };
 		F5A2ABE957D6E90D6E68D89C /* Pods_redeux2Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_redeux2Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -143,6 +153,7 @@
 		4912884A213637A100FAB2DA /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				495F132D213B7D0000F5D2D5 /* ReactiveViewController.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -182,6 +193,7 @@
 			isa = PBXGroup;
 			children = (
 				491288532136383C00FAB2DA /* SignInViewController.swift */,
+				495F132B213B7A1200F5D2D5 /* SignInReactor.swift */,
 			);
 			path = SignIn;
 			sourceTree = "<group>";
@@ -190,6 +202,7 @@
 			isa = PBXGroup;
 			children = (
 				491288552136384E00FAB2DA /* SplashViewController.swift */,
+				491288612136D79F00FAB2DA /* SplashReactor.swift */,
 			);
 			path = Splash;
 			sourceTree = "<group>";
@@ -197,8 +210,18 @@
 		491288582136388D00FAB2DA /* App */ = {
 			isa = PBXGroup;
 			children = (
+				4912885A21363CE500FAB2DA /* Navigation */,
 			);
 			path = App;
+			sourceTree = "<group>";
+		};
+		4912885A21363CE500FAB2DA /* Navigation */ = {
+			isa = PBXGroup;
+			children = (
+				4912885D21363D9800FAB2DA /* RouterReactor.swift */,
+				4912885F21365B1200FAB2DA /* Router.swift */,
+			);
+			path = Navigation;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -316,6 +339,7 @@
 				"${BUILT_PRODUCTS_DIR}/ReactorKit/ReactorKit.framework",
 				"${BUILT_PRODUCTS_DIR}/Result/Result.framework",
 				"${BUILT_PRODUCTS_DIR}/RxCocoa/RxCocoa.framework",
+				"${BUILT_PRODUCTS_DIR}/RxFeedback/RxFeedback.framework",
 				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
 				"${BUILT_PRODUCTS_DIR}/Toolbelt/Toolbelt.framework",
@@ -331,6 +355,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReactorKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Result.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxCocoa.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxFeedback.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Toolbelt.framework",
@@ -385,10 +410,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				491288542136383C00FAB2DA /* SignInViewController.swift in Sources */,
+				491288622136D79F00FAB2DA /* SplashReactor.swift in Sources */,
 				4912882D2136368A00FAB2DA /* ViewController.swift in Sources */,
+				495F132E213B7D0000F5D2D5 /* ReactiveViewController.swift in Sources */,
 				4912882B2136368A00FAB2DA /* AppDelegate.swift in Sources */,
+				4912886021365B1200FAB2DA /* Router.swift in Sources */,
 				4912884F213637E200FAB2DA /* Session.swift in Sources */,
 				491288562136384E00FAB2DA /* SplashViewController.swift in Sources */,
+				495F132C213B7A1200F5D2D5 /* SignInReactor.swift in Sources */,
+				4912885E21363D9800FAB2DA /* RouterReactor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

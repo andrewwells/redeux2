@@ -20,6 +20,7 @@ target 'redeux2' do
   pod 'RxSwift', '~> 4.0'
   pod 'RxCocoa', '~> 4.0'
   pod 'ReactorKit'
+  pod 'RxFeedback'
   
   # Network
   pod 'Moya/RxSwift'
