@@ -13,9 +13,9 @@ import ToolbeltUI
 
 class SignInViewController: ReactiveViewController<SignInReactor> {
     
-    private lazy var usernameTextField: UITextField = {
+    private lazy var emailTextField: UITextField = {
         let tf = UITextField()
-        tf.placeholder = NSLocalizedString("Enter Username", comment: "")
+        tf.placeholder = NSLocalizedString("Enter Email", comment: "")
         return tf
     }()
     
@@ -29,44 +29,44 @@ class SignInViewController: ReactiveViewController<SignInReactor> {
         let button = BaseButton()
         button.textLabel.text = NSLocalizedString("Sign In", comment: "")
         button.cornerRadius = 4.0
+        button.isEnabled = false
         return button
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         self.view.backgroundColor = .white
         self.navigationItem.title = NSLocalizedString("Sign In", comment: "")
         
         setup()
-        setupObservables()
     }
     
-    private func setupObservables() {
+    // MARK: - Reactive
+    override func bind(reactor: SignInReactor) {
         
-        // connection.bind(\Props.username, to: usernameTextField.rx.text)
-        // connection.bind(\Props.password, to: passwordTextField.rx.text)
+        // MARK: - Actions
+        signInButton.rx.controlEvent(.touchUpInside)
+            .map { _ in Reactor.Action.signIn }
+            .bind(to: reactor.action)
+            .disposed(by: self.disposeBag)
         
-        _ = usernameTextField.rx.text
-            .orEmpty // Make it non-optional
-            .skip(1)
-            .debounce(0.5, scheduler: MainScheduler.instance) // Wait 0.5 for changes.
-            .distinctUntilChanged()
-            .takeUntil(self.rx.deallocated)
-            .do(onNext: { [weak self] text in
-                //self?.actions.updateUsername(text)
-            })
-            .subscribe()
+        passwordTextField.rx.text.orEmpty
+            .throttle(0.3, scheduler: MainScheduler.instance)
+            .map { Reactor.Action.updatePassword($0) }
+            .bind(to: reactor.action)
+            .disposed(by: self.disposeBag)
         
-        _ = passwordTextField.rx.text
-            .orEmpty
-            .skip(1)
-            .distinctUntilChanged()
-            .takeUntil(self.rx.deallocated)
-            .do(onNext: { [weak self] text in
-                //self?.actions.updatePassword(text)
-            })
-            .subscribe()
+        emailTextField.rx.text.orEmpty
+            .throttle(0.3, scheduler: MainScheduler.instance)
+            .map { Reactor.Action.updateEmail($0) }
+            .bind(to: reactor.action)
+            .disposed(by: self.disposeBag)
         
+        // MARK: -  State
+        reactor.state.map { $0.validEmailAndPassword }
+            .bind(to: signInButton.rx.isEnabled)
+            .disposed(by: self.disposeBag)
     }
     
     private func setup() {
@@ -78,14 +78,14 @@ class SignInViewController: ReactiveViewController<SignInReactor> {
             make.width.equalToSuperview().multipliedBy(0.9)
         }
         
-        container.addSubview(usernameTextField)
-        usernameTextField.snp.makeConstraints { (make) in
+        container.addSubview(emailTextField)
+        emailTextField.snp.makeConstraints { (make) in
             make.top.leading.trailing.equalToSuperview()
         }
         
         container.addSubview(passwordTextField)
         passwordTextField.snp.makeConstraints { (make) in
-            make.top.equalTo(usernameTextField.snp.bottom).offset(20)
+            make.top.equalTo(emailTextField.snp.bottom).offset(20)
             make.leading.trailing.equalToSuperview()
             make.bottom.equalToSuperview()
         }
@@ -97,14 +97,22 @@ class SignInViewController: ReactiveViewController<SignInReactor> {
             make.bottom.equalToSuperview().offset(-20)
             make.height.equalTo(60)
         }
-        
+    }
+}
+
+extension SignInReactor.State {
+    
+    var validEmailAndPassword: Bool {
+       return validEmail && validPassword
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+    var validEmail: Bool {
+        guard let email = email else { return false }
+        return !email.isEmpty
     }
     
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
+    var validPassword: Bool {
+        guard let password = password else { return false }
+        return !password.isEmpty
     }
 }

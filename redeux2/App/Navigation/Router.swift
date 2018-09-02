@@ -14,28 +14,20 @@ class Router: View {
     
     var disposeBag = DisposeBag()
     
-    // typealias Reactor = RouterReactor
-    
     let nav = UINavigationController()
     
-    convenience init(reactor: RouterReactor) {
+    convenience init(reactor: RouterReactor, rootViewController: UIViewController? = nil) {
         self.init()
         self.reactor = reactor
+        if let rootViewController = rootViewController {
+            self.nav.viewControllers = [rootViewController]
+        }
     }
     
     init() {
     }
     
     func bind(reactor: RouterReactor) {
-        
-//        reactor.state
-//            .observeOn(MainScheduler.instance)
-//            .map { $0.views }
-//            .do(onNext: {
-//
-//            })
-//            .subscribe()
-//            .disposed(by: disposeBag)
         
         reactor.action
             .debug()

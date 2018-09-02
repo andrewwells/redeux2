@@ -35,9 +35,10 @@ final class SplashReactor: Reactor {
         switch action {
         case .validateSession:
             return Observable<Int>.timer(2, scheduler: MainScheduler.instance)
+                .take(1)
                 .map { _ in .updateAuthorization(authorized:false) }
         case .complete:
-            return .just(.none)
+            return Observable.just(.none).observeOn(MainScheduler.asyncInstance)
         }
     }
     

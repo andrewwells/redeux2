@@ -26,12 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let splashViewController = SplashViewController(reactor: splashReactor)
         
         let routerReactor = RouterReactor()
-        router = Router(reactor: routerReactor)
-        
-        _ = Observable.just(())
-            .map { RouterReactor.Action.set([splashViewController]) }
-            .take(1)
-            .bind(to: routerReactor.action)
+        router = Router(reactor: routerReactor, rootViewController: splashViewController)
         
         _ = splashReactor
             .action
@@ -52,6 +47,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
             .takeUntil(splashViewController.rx.deallocated)
             .bind(to: routerReactor.action)
+        
         
         // Setup Keyboard Manager
         IQKeyboardManager.shared.enable = true

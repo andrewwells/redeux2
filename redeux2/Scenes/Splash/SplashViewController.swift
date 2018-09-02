@@ -37,16 +37,18 @@ class SplashViewController: ReactiveViewController<SplashReactor> {
     override func bind(reactor: SplashReactor) {
         super.bind(reactor: reactor)
         
-        _ = Observable.just(())
-            .map { _ in SplashReactor.Action.validateSession }
-            .bind(to: reactor.action)
+        let delay = Observable<Int>.timer(2, scheduler: MainScheduler.instance).take(1).map { _ in () }
+        let validateSession = reactor.state.filter { $0.sessionValidated != nil }.map { _ in () }
         
-        let delay = Observable<Int>.timer(1, scheduler: MainScheduler.instance).map { _ in () }
-        let validateSession = reactor.state.filter { $0.sessionValidated != nil }
-        
-        Observable.combineLatest(validateSession, delay)
+        Observable.combineLatest(delay, validateSession)
             .map { _ in SplashReactor.Action.complete }
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
+        
+        reactor.state
+            .filter { $0.sessionValidated == nil }
+            .map { _ in SplashReactor.Action.validateSession }
+            .bind(to: reactor.action)
+            .disposed(by: self.disposeBag)
     }
 }
