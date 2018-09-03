@@ -37,10 +37,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 let vc: UIViewController
                 
                 if state.sessionValidated! {
-                    vc = UIViewController()
-                    vc.view.backgroundColor = .white
+                    vc = HomeViewController(reactor: HomeReactor())
                 } else {
-                    vc = SignInViewController(reactor: SignInReactor())
+                    let signInReactor = SignInReactor(authProvider: AuthProvider())
+                    vc = SignInViewController(reactor: signInReactor)
+                    _ = signInReactor.state
+                        .filter { $0.complete }
+                        .observeOn(MainScheduler.instance)
+                        .map { _ in
+                            let mainViewController = HomeViewController(reactor: HomeReactor())
+                            return RouterReactor.Action.set([mainViewController])
+                        }
+                        .takeUntil(vc.rx.deallocated)
+                        .bind(to: routerReactor.action)
                 }
                 
                 return RouterReactor.Action.set([vc])

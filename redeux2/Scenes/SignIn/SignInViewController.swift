@@ -10,6 +10,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 import ToolbeltUI
+import Toolbelt
 
 class SignInViewController: ReactiveViewController<SignInReactor> {
     
@@ -47,26 +48,55 @@ class SignInViewController: ReactiveViewController<SignInReactor> {
         
         // MARK: - Actions
         signInButton.rx.controlEvent(.touchUpInside)
+            .do(onNext: { [weak self] _ in
+                guard let `self` = self else { return }
+                self.doShowProgress(for: self.view)
+            })
             .map { _ in Reactor.Action.signIn }
             .bind(to: reactor.action)
-            .disposed(by: self.disposeBag)
+            .disposed(by: disposeBag)
         
         passwordTextField.rx.text.orEmpty
             .throttle(0.3, scheduler: MainScheduler.instance)
             .map { Reactor.Action.updatePassword($0) }
             .bind(to: reactor.action)
-            .disposed(by: self.disposeBag)
+            .disposed(by: disposeBag)
         
         emailTextField.rx.text.orEmpty
             .throttle(0.3, scheduler: MainScheduler.instance)
             .map { Reactor.Action.updateEmail($0) }
             .bind(to: reactor.action)
-            .disposed(by: self.disposeBag)
+            .disposed(by: disposeBag)
         
         // MARK: -  State
         reactor.state.map { $0.validEmailAndPassword }
             .bind(to: signInButton.rx.isEnabled)
-            .disposed(by: self.disposeBag)
+            .disposed(by: disposeBag)
+        
+        reactor.state
+            .map { $0.error}
+            .filter { $0 != nil }
+            .observeOn(MainScheduler.instance)
+            .do(onNext: { [weak self] err in
+                Log.e("\(err!)")
+                guard let `self` = self else { return }
+                self.doShowMessage("Something Went Wrong!", for: self.view)
+            })
+            .subscribe()
+            .disposed(by: disposeBag)
+        
+        reactor.state
+            .map { $0.session }
+            .filter { $0 != nil }
+            .observeOn(MainScheduler.instance)
+            .do(onNext: { [weak self] session in
+                guard let `self` = self else { return }
+                self.doShowMessage("Successfully Signed In!", for: self.view)
+            })
+            .delay(1, scheduler: MainScheduler.instance)
+            .map { _ in Reactor.Action.complete }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
     }
     
     private func setup() {
